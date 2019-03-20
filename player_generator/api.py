@@ -8,6 +8,7 @@ from flask import Flask, redirect, render_template, url_for
 
 from . import load_players_from_file, PlayerGenerator
 from .countries import get_all_countries, get_country_by_slug
+from .encodeint import decode, encode
 
 app = Flask(__name__)
 
@@ -23,9 +24,10 @@ with open(get_latest_filename(), "r") as input_file:
     generator = PlayerGenerator(players, min_profile_length=100)
 
 
-@app.route("/p/<country_slug>/<int:seed>")
-def view_player(country_slug, seed):
+@app.route("/p/<country_slug>/<seed_str>")
+def view_player(country_slug, seed_str):
     country = get_country_by_slug(country_slug)
+    seed = decode(seed_str)
 
     (player, _seed) = generator.generate(country_id=country.country_id, seed=seed)
     return render_template("player.html", player=player)
@@ -36,8 +38,9 @@ def random_player():
     country = random.choice(get_all_countries())
 
     seed = random.randint(1_000_000, 999_999_999)
+    seed_str = encode(seed)
 
-    url = url_for("view_player", country_slug=country.slug, seed=seed)
+    url = url_for("view_player", country_slug=country.slug, seed_str=seed_str)
     return redirect(url)
 
 
