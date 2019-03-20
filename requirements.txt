@@ -1,3 +1,4 @@
+Flask==1.0.2
 pytest==4.3.1
 Scrapy==1.6.0
 sujmarkov==1.0.1
