@@ -45,6 +45,8 @@
                     <h5>{{ player.fullname }}</h5>
                     <p>{{ player.country_name }}</p>
                     <div class="divider"></div>
+                    <p>{{ player.batting_style }}, {{ player.bowling_style }}</p>
+                    <div class="divider"></div>
                     {% for line in player.profile %}
                     <p>{{ line }}</p>
                     {% endfor %}

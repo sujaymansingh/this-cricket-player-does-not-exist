@@ -2,9 +2,23 @@ import json
 import random
 import re
 
+from itertools import product
+
 from sujmarkov import Markov
 
 from .countries import get_all_countries, get_country_by_id
+
+
+def get_all_batting_styles():
+    return ["Right hand bat", "Left hand bat"]
+
+
+def get_all_bowling_styles():
+    return [
+        "Right arm fast bowler", "Right arm fast-medium bowler", "Right arm medium bowler", "Left arm fast bowler",
+        "Left arm fast-medium bowler", "Left arm medium bowler", "Leg spin bowler", "Off spin bowler",
+        "Slow left arm orthodox bowler", "Left arm unorthodox bowler", "Wicket-keeper"
+    ]
 
 
 class PlayerGenerator():
@@ -78,18 +92,31 @@ class PlayerGenerator():
 
         cleaned_profile = [line.strip() for line in profile]
 
+        batting_style = random_.choice(get_all_batting_styles())
+        bowling_style = random_.choice(get_all_bowling_styles())
+
         player = Player(
             country_id=country_id,
             firstnames=firstnames,
             surname=surname,
             profile=cleaned_profile,
             fullname=firstnames + " " + surname,
+            batting_style=batting_style,
+            bowling_style=bowling_style,
             known_as="")
         return (player, seed)
 
 
 class Player():
-    def __init__(self, country_id=None, surname="", known_as="", fullname="", profile="", firstnames=""):
+    def __init__(self,
+                 country_id=None,
+                 surname="",
+                 known_as="",
+                 fullname="",
+                 profile="",
+                 firstnames="",
+                 batting_style="unknown",
+                 bowling_style="unknown"):
         country = get_country_by_id(country_id)
         self.country_name = country.name
         self.country_id = country.country_id
@@ -102,6 +129,9 @@ class Player():
             self.firstnames = get_firstnames(fullname, surname)
         else:
             self.firstnames = firstnames
+
+        self.batting_style = batting_style
+        self.bowling_style = bowling_style
 
         self.profile = profile
 
