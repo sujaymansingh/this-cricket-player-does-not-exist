@@ -63,6 +63,10 @@ def random_player():
     url = generate_url(country, seed, player)
     return redirect(url)
 
+@app.route("/")
+def home():
+    return redirect(url_for("random_player"))
+
 
 if __name__ == "__main__":
     debug = "--debug" in sys.argv[1:]
