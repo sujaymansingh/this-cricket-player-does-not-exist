@@ -34,6 +34,11 @@ def generate_url(country, seed, player):
     )
 
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
 @app.route("/p/<country_slug>/<seed_str>/<name_slug>")
 def view_player(country_slug, seed_str, name_slug):
     country = get_country_by_slug(country_slug)
